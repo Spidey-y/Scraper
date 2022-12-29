@@ -1,0 +1,9 @@
+Django
+python-dotenv
+djangorestframework
+drf-yasg
+markdown       
+mysqlclient
+Pillow
+requests
+django-filter
