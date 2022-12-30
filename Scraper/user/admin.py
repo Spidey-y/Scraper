@@ -11,7 +11,7 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ('id', 'last_name', 'first_name', 'email', 'phone_number', 'address')
     search_fields = ['id', 'last_name', 'first_name', 'email', 'phone_number', 'address']
     list_per_page = 100
-
+        
 
 admin.site.site_header = "Scraper admin panel"
 admin.site.site_url = "/products/add-products"

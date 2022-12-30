@@ -16,69 +16,6 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .filters import ProductFilter
 
 
-class AddProductView(generics.GenericAPIView):
-    """
-    Add produts from json file
-    If categorie not found in databse, it will be created
-    status 201 if file correct and uploaded to db
-    400 if no file provided, wrong file format
-    """
-    #define permission and parsers
-    parser_classes = (parsers.MultiPartParser,parsers.FormParser)
-    permission_classes = (permissions.IsAdminUser,)
-    serializer_class = ProductSeedingSerializer
-    def post(self, request):
-        #If a file not provided return 400
-        if not request.FILES.get("file"):
-            return Response({"details": "Provide a json file"}, status=status.HTTP_400_BAD_REQUEST)
-        #get the file from the request
-        file = request.FILES.get("file")
-        serializer = ProductSeedingSerializer(data=request.data)
-        if serializer.is_valid():
-            try:
-                #ret will hold the return message and errors in case there was any
-                ret = {"details": "Succefully uploaded"}
-                #loop through json file
-                for prod in json.loads(s=file.read().decode('ascii')):
-                    resp = requests.get(prod['photo'])
-                    #if image found download it, else insert image not found in ret
-                    if resp.status_code == 200:
-                        #download image
-                        parsed_url = urlparse(prod['photo'])
-                        filename = parsed_url.path.split('/')[-1]
-                        img = File(BytesIO(resp.content),name=filename)
-                        #insert image in the object
-                        prod['photo'] = img
-                        prod['original_store'] = serializer.data['original_store'].lower()
-                        prod['brand'] = prod['brand'].lower()
-                        categories = []
-                        #check if categorie exist, if not create one
-                        for i in [j.strip().lower() for j in serializer.data['categorie'].split(',')]:
-                            c = Categorie.objects.filter(categorie_name=i).first()
-                            if not c:
-                                new_categorie = Categorie(categorie_name=i)
-                                new_categorie.save()
-                                categories.append(new_categorie.id)
-                            else:
-                                categories.append(c.id)
-                        prod['categorie'] =  categories
-                        #check if the data is correct, if so inset it in database
-                        prod_serilizer = AddProductSerializer(data=prod)
-                        if prod_serilizer.is_valid():
-                            prod_serilizer.save()
-                    else:
-                        #if photo nout found
-                        ret[prod['photo']] = "Not found"
-                log = Log(user=request.user, action="Added new products succefully")
-                log.save()
-                return Response(ret, status=status.HTTP_201_CREATED)
-            except:
-                #if there was an issue
-                log = Log(user=request.user, action="Failed to add new products")
-                log.save()
-                return Response({"details": "json file contains issues"}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({"details": "Provide a json file"}, status=status.HTTP_400_BAD_REQUEST)
-
 
 class GetCategoriesView(generics.GenericAPIView):
     """
@@ -140,7 +77,6 @@ class AddOrderView(generics.GenericAPIView):
         try:
             temp = request.data
             temp['user'] = request.user.id
-            print(temp)
             ser = OrderSerializer(data=temp)
             if ser.is_valid():
                 ser.save()

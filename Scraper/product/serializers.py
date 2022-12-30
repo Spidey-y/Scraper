@@ -29,7 +29,7 @@ class ProductSeedingSerializer(serializers.Serializer):
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = ['user','products']
+        fields = ['products']
 
 
 class BrandSerializer(serializers.ModelSerializer):

@@ -24,7 +24,7 @@ class Product(models.Model):
 
     def __str__(self):
         return self.full_name
-
+    
 
 class Order(models.Model):
     STATUS_CHOICES = (
@@ -37,4 +37,6 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False)
     date = models.DateTimeField(auto_now_add=True, blank=False, null=False)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', blank=False, null=False)
-    products = models.ManyToManyField(Product)
+    products = models.ManyToManyField(Product,)
+    
+    

@@ -1,10 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'admin/base.html' %}
+{% load static %}
+
+
+{% block header %}
+<div id="header">
+  <div id="branding">
+    <a href="/admin"><h1>Scraper admin panel</h1></a>
+  </div>
+</div>
+{% endblock %}
+{% block content %}
+
+  <h1>Add new product</h1>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% if not output %}
+    <div class="terminal">
+      <pre>Please, don't leave this window after you start the upload</pre>
+    </div>
+    {% endif %}
+    <button type="submit" {% if form.is_valid %}class="btn btn-primary"{% else %}class="btn btn-primary disabled"{% endif %}>Upload</button>
+  </form>
+  
+ 
+
+  {% if output %}
+  <div class="terminal">
+    <pre>{{ output|safe }}</pre>
+  </div>
+  {% endif %}
+{% endblock %}
