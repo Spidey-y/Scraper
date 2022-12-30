@@ -2,3 +2,4 @@ Scraper/.env
 Scraper/venv
 
 **/__pycache__/
+**/media/

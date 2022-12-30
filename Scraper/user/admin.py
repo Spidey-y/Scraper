@@ -9,6 +9,7 @@ except ImportError:
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ('id', 'last_name', 'first_name', 'email', 'phone_number', 'address')
+    list_display_links = ('id', 'last_name', 'first_name',)
     search_fields = ['id', 'last_name', 'first_name', 'email', 'phone_number', 'address']
     list_per_page = 100
         

@@ -12,15 +12,18 @@ class ProductAdmin(admin.ModelAdmin):
                     'brand',
                     'time_added',
                     'staff_pick',)
+    list_display_links = ('id', 'full_name',)
     search_fields = ('full_name', 'original_store', 'brand')
     list_filter = ('categorie__categorie_name', 'brand', 'original_store')
     list_per_page = 100
-
+    readonly_fields =( 'categorie',)
+    list_editable = ('staff_pick',)
 
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('id', 'user',
                     'date',
                     'status', )
+    list_display_links = ('id', 'user', )
     search_fields = ('user__last_name', 'user__first_name')
     list_filter = ('status', )
     ordering = ['-date']
@@ -44,10 +47,10 @@ class OrderAdmin(admin.ModelAdmin):
 
 class CateAdmin(admin.ModelAdmin):
     list_display = ('id', 'categorie_name',)
+    list_display_links = ('id', 'categorie_name',)
     search_fields = ('categorie_name',)
     list_per_page = 100
-    
-    
+
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Order, OrderAdmin)

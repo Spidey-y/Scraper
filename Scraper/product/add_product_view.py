@@ -13,16 +13,17 @@ from urllib.parse import urlparse
 
 class FileUploadForm(forms.Form):
     file = forms.FileField()
-    category = forms.CharField(max_length=100)
+    categories = forms.CharField(max_length=100)
     original_store = forms.CharField(max_length=100)
-    
+
+@login_required(login_url='/admin/login')
 @user_passes_test(lambda u: u.is_staff)
 def upload_view(request):
     if request.method == 'POST':
         form = FileUploadForm(request.POST, request.FILES)
         if form.is_valid():
             file = form.cleaned_data['file']
-            category = form.cleaned_data['category']
+            category = form.cleaned_data['categories']
             original_store = form.cleaned_data['original_store']
             output = process_data(file, category, original_store, request.user)
             return render(request, 'product/add_product.html', {'form': form, 'output': output})
