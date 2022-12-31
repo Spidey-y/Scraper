@@ -13,13 +13,13 @@ class Categorie(models.Model):
 class Product(models.Model):
     full_name = models.CharField(max_length=255, blank=False, null=False)
     photo = models.ImageField(upload_to=settings.MEDIA_URL[1:], blank=True)
-    price = models.DecimalField(max_digits=8, decimal_places=2)
-    original_link = models.CharField(max_length=255, blank=False, null=False)
+    price = models.DecimalField(max_digits=8, decimal_places=2, )
+    original_link = models.CharField(max_length=1000, blank=False, null=False)
     original_store = models.CharField(max_length=255, blank=False, null=False)
-    brand = models.CharField(max_length=255, blank=False, null=False)
+    brand = models.CharField(max_length=255, blank=True)
     time_added = models.DateTimeField(auto_now=True)
     staff_pick = models.BooleanField(default=False)
-    description = models.TextField(max_length=1000)
+    description = models.TextField(blank=True)
     categorie = models.ManyToManyField(Categorie)
 
     def __str__(self):
@@ -39,4 +39,5 @@ class Order(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', blank=False, null=False)
     products = models.ManyToManyField(Product,)
     
-    
+    def __str__(self):
+        return f'{str(self.user)}, {self.status}'

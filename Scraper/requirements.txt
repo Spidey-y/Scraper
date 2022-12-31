@@ -7,3 +7,5 @@ mysqlclient
 Pillow
 requests
 django-filter
+bs4
+html5lib

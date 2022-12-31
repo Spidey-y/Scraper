@@ -1,5 +1,6 @@
 Scraper/.env
 Scraper/venv
-
+.idea
 **/__pycache__/
 **/media/
+**/.venv
