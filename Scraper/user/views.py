@@ -15,13 +15,10 @@ class RegisterUserView(generics.GenericAPIView):
     """
     permission_classes = ()
     serializer_class = UserRegisterSerializer
-
     def post(self, request):
         user = UserRegisterSerializer(data=request.data)
         if user.is_valid():
             user.save()
-            log = Log(action="Created new account", user=user)
-            log.save()
             token = Token.objects.create(user=user)
             return Response({"Token": token.key}, status=status.HTTP_201_CREATED)
         return Response({"details": "Invalid data"}, status=status.HTTP_400_BAD_REQUEST)

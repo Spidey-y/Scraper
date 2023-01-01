@@ -12,16 +12,20 @@ from urllib.parse import urlparse
 from product.scripts.amazon import scrape_amazon
 from product.scripts.sephora import scrap_sephora
 from product.scripts.shein import scrap_shein
+from product.scripts.aliexpress import scrap_aliexpress
 
 
 class FileUploadForm(forms.Form):
     categories = forms.CharField(label='Categories (separated by , )', max_length=100)
     original_store = forms.ChoiceField(label='Original store',
-                                       choices=[('amazon', 'Amazon'), ('aliexpress', 'AliExpress'),
-                                                ('sephora', 'Sephora'),
+                                       choices=[('amazon', 'Amazon'), ('aliexpress', 'AliExpress (USD)'),
+                                                ('sephora', 'Sephora (USD)'),
                                                 ('shein', 'Shein')])
     urls = forms.CharField(label='URLs (seperated by newline)', widget=forms.Textarea)
     percentage = forms.FloatField()
+    max_value = forms.FloatField(label="Max price value (DZD)")
+    more = forms.FloatField(label="Extra cost if more (DZD)")
+    less = forms.FloatField(label="Extra cost if less (DZD)")
 
 
 @login_required(login_url='/admin/login')
@@ -34,19 +38,22 @@ def upload_view(request):
             category = form.cleaned_data['categories']
             original_store = form.cleaned_data['original_store']
             percentage = form.cleaned_data['percentage']
-            output = process_data(urls, category, original_store, request.user, percentage)
+            maxVal = form.cleaned_data['max_value']
+            more = form.cleaned_data['more']
+            less = form.cleaned_data['less']
+            output = process_data(urls, category, original_store, request.user, percentage, maxVal, more, less)
             return render(request, 'product/add_product.html', {'form': form, 'output': output})
     else:
         form = FileUploadForm()
     return render(request, 'product/add_product.html', {'form': form})
 
 
-def process_data(urls, categorie, store, user, perc):
-    headers = {
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
-        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-    }
-    try:
+def process_data(urls, categorie, store, user, perc, maxVal ,more, less):
+        headers = {
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
+            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+        }
+    # try:
         cates = []
         ret = {}
         # check if categorie exist, if not create one
@@ -58,7 +65,7 @@ def process_data(urls, categorie, store, user, perc):
                 cates.append(new_categorie.id)
             else:
                 cates.append(c.id)
-        try:
+        # try:
             for url in urls.split("\r\n"):
                 if store=="amazon":
                     products = scrape_amazon(url, perc)
@@ -66,9 +73,12 @@ def process_data(urls, categorie, store, user, perc):
                     products = scrap_shein(url, perc)
                 elif store == "sephora":
                     products = scrap_sephora(url, perc)
+                elif store == "aliexpress":
+                    products = scrap_aliexpress(url, perc)
+                else:
+                    break
 
                 for prod in products:
-                    print(prod)
                     resp = requests.get(prod['photo'], headers=headers)
                     # if image found download it, else insert image not found in ret
                     if resp.status_code == 200:
@@ -78,6 +88,11 @@ def process_data(urls, categorie, store, user, perc):
                         img = File(BytesIO(resp.content), name=filename)
                         # insert image in the object
                         prod['photo'] = img
+                        print(prod['price'])
+                        if prod['price'] > maxVal:
+                            prod['price'] += more
+                        else:
+                            prod['price'] += less
                         prod['original_store'] = store.lower()
                         prod['brand'] = prod['brand'].lower()
                         prod['categorie'] = cates
@@ -97,14 +112,14 @@ def process_data(urls, categorie, store, user, perc):
                     else:
                         # if photo nout found
                         ret[prod['full_name']] = "picture not found"
-        except:
+        # except:
             ret[url] = 'invalid url'
 
         log = Log(user=user, action="Added new products succefully")
         log.save()
         ret["details"] = "Upload is over"
         return ret
-    except:
+    # except:
         # if there was an issue
         log = Log(user=user, action="Failed to add new products")
         log.save()

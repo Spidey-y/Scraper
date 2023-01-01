@@ -1,11 +1,15 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from time import sleep
 
 
 def scrap_shein(url, perc):
     driver = webdriver.Chrome()
     driver.get(url)
-    driver.execute_script('window.scrollTo(0, document.body.scrollHeight);')
+    driver.execute_script("window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })")
+    sleep(1)
+    driver.execute_script("window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })")
+    sleep(1)
     products = []
     for product in driver.find_elements(By.XPATH, '//*[@id="product-list-v2"]/div/div[2]/div[2]/section/div[1]/section'):
         original_link = product.find_element(By.XPATH, './/div[2]/div[1]/a').get_attribute('href')

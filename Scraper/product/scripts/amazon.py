@@ -38,10 +38,13 @@ def scrape_amazon(url, perc):
                 tmp['brand'] = ""
         except:
             tmp['brand'] = ""
-        if float(prod.find('i',
-                           class_=['a-icon', 'a-icon-star-small', 'a-star-small-5', 'aok-align-bottom']).text.split(" ")[0]) > 4.5:
-            tmp['staff_pick'] = True
-        else:
+        try:
+            if float(prod.find('i',
+                               class_=['a-icon', 'a-icon-star-small', 'a-star-small-5', 'aok-align-bottom']).text.split(" ")[0]) > 4.5:
+                tmp['staff_pick'] = True
+            else:
+                tmp['staff_pick'] = False
+        except:
             tmp['staff_pick'] = False
         try:
             tmp['description'] = get_descibtion(tmp['original_link'])

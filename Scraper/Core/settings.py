@@ -26,8 +26,8 @@ SECRET_KEY = SECRET
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['fa15-41-104-12-213.eu.ngrok.io', '127.0.0.1']
-CSRF_TRUSTED_ORIGINS = ['https://fa15-41-104-12-213.eu.ngrok.io', 'http://127.0.0.1']
+ALLOWED_HOSTS = ['df2b-41-109-177-179.eu.ngrok.io', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://df2b-41-109-177-179.eu.ngrok.io', 'http://127.0.0.1']
 LOGIN_URL = '/admin/login'
 
 # Application definition
