@@ -7,3 +7,4 @@ mysqlclient
 Pillow
 requests
 django-filter
+django-cors-headers

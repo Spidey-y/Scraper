@@ -26,13 +26,14 @@ SECRET_KEY = SECRET
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 LOGIN_URL = '/admin/login'
 
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'django_filters',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -54,6 +55,8 @@ MEDIA_URL = "/products/"
 
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
