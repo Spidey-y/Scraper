@@ -75,14 +75,13 @@ class AddOrderView(generics.GenericAPIView):
     serializer_class = OrderSerializer
     def post(self, request):
         try:
-            temp = request.data
-            temp['user'] = request.user.id
-            ser = OrderSerializer(data=temp)
+            ser = OrderSerializer(data=request.data)
             if ser.is_valid():
                 ser.save()
                 log = Log(action="Added new order", user=request.user)
                 log.save()
                 return Response(ser.data, status=status.HTTP_201_CREATED)
+            print(ser.errors)
             return Response({"details":"Invalid data"}, status=status.HTTP_400_BAD_REQUEST)
         except:
             return Response({"details": "Invalid data"}, status=status.HTTP_400_BAD_REQUEST)

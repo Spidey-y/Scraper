@@ -1,5 +1,7 @@
 from rest_framework import serializers, exceptions
 from .models import Product, Categorie, Order
+from user.models import User
+from re import match
 
 
 class CategorieSerializer(serializers.ModelSerializer):
@@ -29,8 +31,12 @@ class ProductSeedingSerializer(serializers.Serializer):
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = ['products']
+        fields = ['products', 'full_name', 'address', 'phone_number', 'description', 'user']
 
+    def validate(self, attrs):
+        if not match(r'^(\+213)?[0-9]{10}$', attrs['phone_number']):
+            raise serializers.ValidationError(detail="Invalid phone number")
+        return attrs
 
 class BrandSerializer(serializers.ModelSerializer):
     count = serializers.IntegerField(read_only=True)
@@ -50,7 +56,7 @@ class GetOrderSerializer(serializers.ModelSerializer):
     class Meta:
         depth = 2
         model = Order
-        fields = ['id','products', 'status']
+        fields = ['id','products', 'status', 'full_name', 'address', 'phone_number', 'description', 'date']
 
 
 class AddProductSerializer(serializers.ModelSerializer):

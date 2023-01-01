@@ -14,20 +14,35 @@
   <h1>Add new product</h1>
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
+      <label for="id_categories">Categories (separated by , ):</label>
+        {{ form.categories }}
+        <br>
+        <br>
+      <label for="id_percentage">Price of 1USD (EUR) in DZD:</label>
+        {{ form.percentage }}
+        <br>
+        <br>
+        <label for="id_original_store">Original store:</label>
+        {{ form.original_store }}
+        <br>
+        <br>
+        <label for="id_urls">URLs: </label>
+        {{ form.urls }}
+        <br>
+        <br>
     {% if not output %}
     <div class="terminal">
       <pre>Please, don't leave this window after you start the upload</pre>
     </div>
     {% endif %}
-    <button type="submit" {% if form.is_valid %}class="btn btn-primary"{% else %}class="btn btn-primary disabled"{% endif %}>Upload</button>
+    <button type="submit" {% if form.is_valid %}class="btn btn-primary"{% else %}class="btn btn-primary disabled"{% endif %}>Start upload</button>
   </form>
   
  
 
   {% if output %}
   <div class="terminal">
-    <pre>{{ output|safe }}</pre>
+    <pre>{{ output|linebreaks|safe }}</pre>
   </div>
   {% endif %}
 {% endblock %}

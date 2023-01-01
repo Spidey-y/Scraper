@@ -13,13 +13,13 @@ class Categorie(models.Model):
 class Product(models.Model):
     full_name = models.CharField(max_length=255, blank=False, null=False)
     photo = models.ImageField(upload_to=settings.MEDIA_URL[1:], blank=True)
-    price = models.DecimalField(max_digits=8, decimal_places=2)
-    original_link = models.CharField(max_length=255, blank=False, null=False)
+    price = models.DecimalField(max_digits=8, decimal_places=2, )
+    original_link = models.CharField(max_length=1000, blank=False, null=False)
     original_store = models.CharField(max_length=255, blank=False, null=False)
-    brand = models.CharField(max_length=255, blank=False, null=False)
+    brand = models.CharField(max_length=255, blank=True)
     time_added = models.DateTimeField(auto_now=True)
     staff_pick = models.BooleanField(default=False)
-    description = models.TextField(max_length=1000)
+    description = models.TextField(blank=True)
     categorie = models.ManyToManyField(Categorie)
 
     def __str__(self):
@@ -35,8 +35,13 @@ class Order(models.Model):
         ('deleted', 'Deleted')
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False)
+    full_name = models.CharField(max_length=255, blank=False, null=False)
+    address = models.CharField(max_length=255, blank=False, null=False)
+    phone_number = models.CharField(max_length=13, blank=False, null=False)
+    description = models.TextField(max_length=100, blank=True)
     date = models.DateTimeField(auto_now_add=True, blank=False, null=False)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', blank=False, null=False)
     products = models.ManyToManyField(Product,)
     
-    
+    def __str__(self):
+        return f'Order by: {str(self.full_name)}, {self.status}'

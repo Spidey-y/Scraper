@@ -8,3 +8,6 @@ Pillow
 requests
 django-filter
 django-cors-headers
+bs4
+html5lib
+selenium
