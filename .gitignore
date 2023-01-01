@@ -3,4 +3,5 @@ Scraper/venv
 .idea
 **/__pycache__/
 **/media/
-**/.venv
+**/.venv/
+**/.idea/

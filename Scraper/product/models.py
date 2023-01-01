@@ -35,9 +35,13 @@ class Order(models.Model):
         ('deleted', 'Deleted')
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False)
+    full_name = models.CharField(max_length=255, blank=False, null=False)
+    address = models.CharField(max_length=255, blank=False, null=False)
+    phone_number = models.CharField(max_length=13, blank=False, null=False)
+    description = models.TextField(max_length=100, blank=True)
     date = models.DateTimeField(auto_now_add=True, blank=False, null=False)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', blank=False, null=False)
     products = models.ManyToManyField(Product,)
     
     def __str__(self):
-        return f'{str(self.user)}, {self.status}'
+        return f'Order by: {str(self.full_name)}, {self.status}'

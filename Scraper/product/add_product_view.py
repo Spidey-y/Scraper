@@ -10,6 +10,8 @@ from io import BytesIO
 from django.core.files import File
 from urllib.parse import urlparse
 from product.scripts.amazon import scrape_amazon
+from product.scripts.sephora import scrap_sephora
+from product.scripts.shein import scrap_shein
 
 
 class FileUploadForm(forms.Form):
@@ -40,6 +42,10 @@ def upload_view(request):
 
 
 def process_data(urls, categorie, store, user, perc):
+    headers = {
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
+        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+    }
     try:
         cates = []
         ret = {}
@@ -56,8 +62,14 @@ def process_data(urls, categorie, store, user, perc):
             for url in urls.split("\r\n"):
                 if store=="amazon":
                     products = scrape_amazon(url, perc)
+                elif store == "shein":
+                    products = scrap_shein(url, perc)
+                elif store == "sephora":
+                    products = scrap_sephora(url, perc)
+
                 for prod in products:
-                    resp = requests.get(prod['photo'])
+                    print(prod)
+                    resp = requests.get(prod['photo'], headers=headers)
                     # if image found download it, else insert image not found in ret
                     if resp.status_code == 200:
                         # download image
@@ -70,17 +82,18 @@ def process_data(urls, categorie, store, user, perc):
                         prod['brand'] = prod['brand'].lower()
                         prod['categorie'] = cates
                         # check if the data is correct, if so inset it in database
-                        prod_serilizer = AddProductSerializer(data=prod)
-                        if prod_serilizer.is_valid():
-                            instc = Product.objects.filter(full_name=prod_serilizer.data['full_name']).first()
-                            if instc:
-                                update = AddProductSerializer(instc, data=prod)
-                                if update.is_valid():
-                                    update.save()
-                            else:
-                                prod_serilizer.save()
+                        instc = Product.objects.filter(full_name=prod).first()
+                        if instc:
+                            update = AddProductSerializer(instc, data=prod)
+                            if update.is_valid():
+                                update.save()
+                                continue
                         else:
-                            ret[prod['full_name']] = prod_serilizer.errors
+                            prod_serilizer = AddProductSerializer(data=prod)
+                            if prod_serilizer.is_valid():
+                                    prod_serilizer.save()
+                            else:
+                                ret[prod['full_name']] = prod_serilizer.errors
                     else:
                         # if photo nout found
                         ret[prod['full_name']] = "picture not found"
