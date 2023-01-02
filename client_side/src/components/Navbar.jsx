@@ -1,19 +1,31 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FiShoppingCart } from "react-icons/fi";
 import { RxAvatar, RxHamburgerMenu } from "react-icons/rx";
-import { RiArrowDropDownLine } from "react-icons/ri";
+import { RiArrowDropDownLine, RiArrowDropRightLine } from "react-icons/ri";
 import { BsSearch } from "react-icons/bs";
 
 const Navbar = () => {
-  const [sessionId] = useState(localStorage.getItem("sessionId") || 0 )
+  const [sessionId] = useState(localStorage.getItem("sessionId") || 0);
+  const [categories, setCategories] = useState();
+  const [stores, setStores] = useState();
   let navigate = useNavigate();
+  useEffect(() => {
+    axios.get("http://127.0.0.1:8000/products/get-categories").then((res) => {
+      setCategories(res.data);
+    });
+
+    axios.get("http://127.0.0.1:8000/products/get-stores").then((res) => {
+      setStores(res.data);
+    });
+  }, []);
 
   function logout() {
     localStorage.clear();
     navigate(0);
   }
-  
+
   return (
     <div className="navbar bg-orange-500">
       <div className="flex-1">
@@ -22,34 +34,41 @@ const Navbar = () => {
             <RxHamburgerMenu />
           </label>
 
-          <ul tabIndex={0} className="menu menu-compact dropdown-content px-1">
+          <ul
+            tabIndex={0}
+            className="menu menu-compact dropdown-content px-1 bg-white rounded-lg"
+          >
             <li className="">
               <a href="/">
                 Categories
-                <RiArrowDropDownLine />
+                <RiArrowDropRightLine />
               </a>
-              <ul className="p-2 bg-base-100">
-                <li className="">
-                  <a href="/">Submenu 1</a>
-                </li>
-                <li className="">
-                  <a href="/">Submenu 2</a>
-                </li>
+              <ul className="p-2 bg-white">
+                {categories
+                  ? categories.map((cat) => (
+                      <li key={cat.id} className="">
+                        <button>{cat.categorie_name}</button>
+                      </li>
+                    ))
+                  : ""}
               </ul>
             </li>
 
             <li tabIndex={0} className="">
               <a href="/">
                 Stores
-                <RiArrowDropDownLine />
+                <RiArrowDropRightLine />
               </a>
-              <ul className="p-2 bg-base-100">
-                <li className="">
-                  <a href="/">Submenu 1</a>
-                </li>
-                <li className="">
-                  <a href="/">Submenu 2</a>
-                </li>
+              <ul className="p-2 bg-white w-full">
+                {stores
+                  ? stores.map((store, _) => (
+                      <li key={_} className="">
+                        <button className="text-center">
+                          {store.original_store}
+                        </button>
+                      </li>
+                    ))
+                  : ""}
               </ul>
             </li>
             <li className="">
@@ -73,13 +92,16 @@ const Navbar = () => {
                 Categories
                 <RiArrowDropDownLine />
               </a>
-              <ul className="p-2 bg-base-100">
-                <li className="">
-                  <a href="/">Submenu 11</a>
-                </li>
-                <li className="">
-                  <a href="/">Submenu 2</a>
-                </li>
+              <ul className="p-2 bg-white w-full">
+                {categories
+                  ? categories.map((cat) => (
+                      <li key={cat.id} className="">
+                        <button className="text-center">
+                          f {cat.categorie_name}
+                        </button>
+                      </li>
+                    ))
+                  : ""}
               </ul>
             </li>
 
@@ -88,13 +110,16 @@ const Navbar = () => {
                 Stores
                 <RiArrowDropDownLine />
               </a>
-              <ul className="p-2 bg-base-100">
-                <li className="">
-                  <a href="/">Submenu 1</a>
-                </li>
-                <li className="">
-                  <a href="/">Submenu 2</a>
-                </li>
+              <ul className="p-2 bg-white w-full">
+                {stores
+                  ? stores.map((store, _) => (
+                      <li key={_} className="">
+                        <button className="text-center">
+                          {store.original_store}
+                        </button>
+                      </li>
+                    ))
+                  : ""}
               </ul>
             </li>
             <li className="">
@@ -106,12 +131,15 @@ const Navbar = () => {
           </ul>
         </div>
       </div>
-      <div className={`navbar-end ${sessionId ? 'hidden' : '' }  `}>
-        <a href="/login" className="btn bg-white text-black hover:bg-white border-none mx-4 px-4">
+      <div className={`navbar-end ${sessionId ? "hidden" : ""}  `}>
+        <a
+          href="/login"
+          className="btn bg-white text-black hover:bg-white border-none mx-4 px-4"
+        >
           Login
         </a>
       </div>
-      <div className={`flex-none gap-2 ${sessionId ? '' : 'hidden' }`}>
+      <div className={`flex-none gap-2 ${sessionId ? "" : "hidden"}`}>
         <div className="form-control hidden md:flex">
           <div className="input-group">
             <input
@@ -157,4 +185,4 @@ const Navbar = () => {
     </div>
   );
 };
-export default Navbar
+export default Navbar;

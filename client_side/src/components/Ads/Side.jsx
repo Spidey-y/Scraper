@@ -1,9 +1,11 @@
-import React from "react";
+import Ad from "./Ad";
 
-const Side = () => {
+const Side = ({ads}) => {
   return (
-    <div className="float-right w-80 flex flex-col">
-      <div className="border-2 bg-orange-500 h-screen">test</div>
+    <div className="float-right flex flex-col gap-4 ">
+      {ads.map((ad)=> 
+        <Ad ad={ad} key={ad.id} />
+        )}
     </div>
   );
 };

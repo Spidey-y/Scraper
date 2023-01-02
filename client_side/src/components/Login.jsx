@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Axios from "axios";
+import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -11,7 +11,7 @@ const Login = () => {
   const handleLogin = () => {
     console.log(email, password);
 
-    Axios.post("http://127.0.0.1:8000/user/login", {
+    axios.post("http://127.0.0.1:8000/user/login", {
       email: email,
       password: password,
     }).then((response) => {

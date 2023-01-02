@@ -24,7 +24,7 @@ const Filter = () => {
   };
 
   return (
-    <div className="h-12 grid grid-col-12 grid-row-3 gap-3 mx-4">
+    <div className="grid grid-col-12 grid-row-3 gap-3 mx-4">
       <button
         className="btn btn-outline btn-accent  col-span-1 row-start-1 justify-self-start w-40"
         onClick={handleClick}
