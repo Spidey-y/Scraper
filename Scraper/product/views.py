@@ -57,7 +57,7 @@ class ProductsView(generics.ListAPIView):
     you can chose sort order by either full_name, -full_name, price, -price, time_added, -time_added
     """
     class CustomPagination(pagination.PageNumberPagination):
-        page_size = 2
+        page_size = 50
         # page_size_query_param = 'page_size'
         # max_page_size = 50
     pagination_class = CustomPagination
