@@ -16,9 +16,8 @@ services:
     volumes:
       - db_data:/var/lib/mysql
   app:
-    image: python:3.10
     build: .
-    depends_on: #links:
+    depends_on:
       - db
     environment:
       - DATABASE_SCHEMA=Scraper

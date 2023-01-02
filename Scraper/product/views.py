@@ -56,8 +56,11 @@ class ProductsView(generics.ListAPIView):
     it also used for searching
     you can chose sort order by either full_name, -full_name, price, -price, time_added, -time_added
     """
-    pagination_class = pagination.PageNumberPagination
-    page_size = 50
+    class CustomPagination(pagination.PageNumberPagination):
+        page_size = 2
+        # page_size_query_param = 'page_size'
+        # max_page_size = 50
+    pagination_class = CustomPagination
     filter_backends = (DjangoFilterBackend,filters.SearchFilter, filters.OrderingFilter)
     filterset_class = ProductFilter
     serializer_class = ProductSerializer
