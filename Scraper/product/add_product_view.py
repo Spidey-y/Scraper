@@ -49,11 +49,11 @@ def upload_view(request):
 
 
 def process_data(urls, categorie, store, user, perc, maxVal ,more, less):
-        headers = {
-            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
-            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-        }
-    # try:
+    headers = {
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
+        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+    }
+    try:
         cates = []
         ret = {}
         # check if categorie exist, if not create one
@@ -65,7 +65,7 @@ def process_data(urls, categorie, store, user, perc, maxVal ,more, less):
                 cates.append(new_categorie.id)
             else:
                 cates.append(c.id)
-        # try:
+        try:
             for url in urls.split("\r\n"):
                 if store=="amazon":
                     products = scrape_amazon(url, perc)
@@ -112,14 +112,14 @@ def process_data(urls, categorie, store, user, perc, maxVal ,more, less):
                     else:
                         # if photo nout found
                         ret[prod['full_name']] = "picture not found"
-        # except:
+        except:
             ret[url] = 'invalid url'
 
         log = Log(user=user, action="Added new products succefully")
         log.save()
         ret["details"] = "Upload is over"
         return ret
-    # except:
+    except:
         # if there was an issue
         log = Log(user=user, action="Failed to add new products")
         log.save()
