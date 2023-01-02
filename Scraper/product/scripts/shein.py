@@ -13,7 +13,7 @@ def scrap_shein(url, perc):
     driver.execute_script("window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })")
     sleep(1)
     products = []
-    for product in driver.find_elements(By.XPATH, '//*[@id="product-list-v2"]/div/div[2]/div[2]/section/div[1]/section')[:4]:
+    for product in driver.find_elements(By.XPATH, '//*[@id="product-list-v2"]/div/div[2]/div[2]/section/div[1]/section'):
         original_link = product.find_element(By.XPATH, './/div[2]/div[1]/a').get_attribute('href')
         full_name = product.find_element(By.XPATH, './/a').get_attribute("aria-label")
         photo = "https://" + product.find_element(By.XPATH, './/img').get_attribute('data-src')[2::]
