@@ -9,9 +9,9 @@ The idea of the project is a website that provides products from many different 
 A docker compose file is provided, make sure to change the env variables to what suits you.
 Else create a vitual env, install requirement.txt and run: 
 
->python manage.py makemigrations
->python manage.py migrate
->python manage.py runserver
+>python manage.py makemigrations <br/>
+>python manage.py migrate <br/>
+>python manage.py runserver <br/>
 >
 
 please note that a MySQL server must be running on port 3306 for the second methode
