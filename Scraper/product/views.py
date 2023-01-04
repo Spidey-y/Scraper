@@ -58,8 +58,7 @@ class ProductsView(generics.ListAPIView):
     """
     class CustomPagination(pagination.PageNumberPagination):
         page_size = 50
-        # page_size_query_param = 'page_size'
-        # max_page_size = 50
+        
     pagination_class = CustomPagination
     filter_backends = (DjangoFilterBackend,filters.SearchFilter, filters.OrderingFilter)
     filterset_class = ProductFilter
@@ -109,6 +108,9 @@ class GetOrderView(generics.GenericAPIView):
 @api_view(["Delete"])
 @permission_classes([IsAuthenticated])
 def DeleteOrderView(request, id):
+    """
+    Deletes order, only if it exists and through the user id
+    """
     try:
         obj = Order.objects.get(id=id,user=request.user)
         if obj.status == 'pending':
