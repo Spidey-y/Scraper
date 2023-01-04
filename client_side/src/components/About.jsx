@@ -1,24 +1,52 @@
-import React from 'react'
+import { AiFillShopping, AiFillBell, AiFillCalendar } from "react-icons/ai";
 
 const About = () => {
   return (
-    <div className='flex flex-col gap-4 items-center container mx-auto my-8 p-12 border-gray-200 border-2'>
-        <h1 className='text-center text-4xl'> About us</h1>
-        <div className='text-lg font-medium leading-loose'>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ratione voluptatem incidunt molestiae eum enim adipisci vel repellat earum in molestias. Animi dolores dicta sit rerum laudantium modi placeat expedita ab?</p>
-            <p>Iste quas autem magnam eligendi et aperiam aut excepturi incidunt ducimus quos dicta est, numquam culpa! Iure in, voluptatum fugit incidunt blanditiis, accusamus sit laborum ullam nisi voluptatibus, autem id?</p>
-            <p>Veniam ipsum magnam maiores dolorem corporis dignissimos, dolor itaque voluptate, architecto beatae cum quam saepe laudantium obcaecati quo eveniet culpa et autem doloribus possimus, sed soluta est! Asperiores, pariatur esse?</p>
-            <p>Soluta labore maiores aliquam odit dolorum numquam optio libero consequuntur! Explicabo minus unde dolor amet quaerat mollitia corporis veritatis minima non esse fugiat, illum id omnis natus dolores blanditiis porro.</p>
-            <p>Cumque velit reprehenderit, accusantium facere assumenda eius pariatur quia, nostrum voluptas totam est quos modi aut eligendi mollitia tenetur hic deserunt. In aperiam consequuntur quis nisi fuga tempora dolorem hic.</p>
-            <p>Earum, facilis laborum. Dolores, rerum saepe vel, sapiente tenetur cupiditate doloribus asperiores sequi explicabo laudantium a reprehenderit laboriosam ipsum quod ut voluptatibus dolor tempora architecto iure ipsam eveniet nesciunt! Magni?</p>
-            <p>Id totam ab natus assumenda quaerat corporis veritatis similique iusto officia voluptates neque alias voluptatem, repellat earum accusamus voluptas quidem corrupti ducimus? Deleniti, vero delectus doloribus quam tempore nihil quisquam!</p>
-            <p>Ab fugiat similique numquam ratione fuga. Facere, molestias amet rerum ducimus maxime voluptates. Quod, voluptatum omnis, quas labore consequuntur, dolore neque assumenda qui suscipit ullam tempore in modi minima molestiae!</p>
-            <p>Consequatur quo corrupti, ipsam repellat nostrum veniam distinctio sed facilis perspiciatis fuga id dolores illo officia! Eligendi repellat ratione delectus omnis odio explicabo velit nobis beatae, possimus dicta illo ab!</p>
-            <p>Atque nobis sint ratione incidunt quaerat sapiente culpa quas perspiciatis soluta, odit quibusdam provident aut. Tempora ab repellendus rerum tenetur quas. Ea itaque facilis dolorum laudantium molestiae quis rem. Harum.</p>
+    <div className="mb-4 container mx-auto my-8 p-12 border-gray-200 border-2 w-full">
+      <h1 className="text-center text-4xl mb-16"> About us</h1>.
+      <div className="text-lg font-medium leading-loose flex flex-row gap-8 justify-around">
+        <div className="bg-gray-200 h-full w-full p-8  ">
+          <AiFillShopping className="h-1/2 w-1/2 mx-auto" />
+          <h3 className="text-3xl text-center mb-4">Lorem1</h3>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum
+            fugit debitis et enim, ea corrupti repellat odit perspiciatis sed
+            quod? Harum nulla voluptatibus libero nostrum praesentium minima
+            dolores molestias. Non? Ea quidem libero et, iure, hic sint
+            consequuntur, labore nesciunt iusto velit sapiente natus sit nobis
+            quibusdam aliquam! Architecto quidem obcaecati, nemo natus molestiae
+            cupiditate quod! Similique tempora earum commodi.
+          </p>
         </div>
-                
+        <div className="bg-gray-200 h-full w-full p-8 transition duration-500 ease-in-out border-8 border-orange-500 transform -translate-y-1 scale-110">
+          <AiFillBell className="h-1/2 w-1/2 mx-auto" />
+          <h3 className="text-3xl text-center mb-4">Lorem2</h3>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum
+            fugit debitis et enim, ea corrupti repellat odit perspiciatis sed
+            quod? Harum nulla voluptatibus libero nostrum praesentium minima
+            dolores molestias. Non? Ea quidem libero et, iure, hic sint
+            consequuntur, labore nesciunt iusto velit sapiente natus sit nobis
+            quibusdam aliquam! Architecto quidem obcaecati, nemo natus molestiae
+            cupiditate quod! Similique tempora earum commodi.
+          </p>
+        </div>
+        <div className="bg-gray-200 h-full w-full p-8 ">
+          <AiFillCalendar className="h-1/2 w-1/2 mx-auto" />
+          <h3 className="text-3xl text-center mb-4">Lorem3</h3>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum
+            fugit debitis et enim, ea corrupti repellat odit perspiciatis sed
+            quod? Harum nulla voluptatibus libero nostrum praesentium minima
+            dolores molestias. Non? Ea quidem libero et, iure, hic sint
+            consequuntur, labore nesciunt iusto velit sapiente natus sit nobis
+            quibusdam aliquam! Architecto quidem obcaecati, nemo natus molestiae
+            cupiditate quod! Similique tempora earum commodi.
+          </p>
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default About
+export default About;

@@ -1,27 +1,22 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-import Navbar from '../components/Navbar';
-import RegisterForm from '../components/Register';
+import Navbar from "../components/Navbar";
+import RegisterForm from "../components/Register";
 
-function Register() {
-  
+function Register({ token, setToken, cartItems }) {
   let history = useNavigate();
 
   useEffect(() => {
-    const sessionId = localStorage.getItem("sessionId") || 0;
-    if (sessionId) {
+    if (token) {
       history("/");
-    } else {
-      console.log("something went wrong");
-      history("/register");
     }
-  }, [history]);
+  }, [history, token]);
 
   return (
     <>
-      <Navbar/>
-      <RegisterForm />      
+      <Navbar token={token} cartItems={cartItems} />
+      <RegisterForm setToken={setToken} />
     </>
   );
 }

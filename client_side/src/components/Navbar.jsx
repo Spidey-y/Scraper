@@ -4,13 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { FiShoppingCart } from "react-icons/fi";
 import { RxAvatar, RxHamburgerMenu } from "react-icons/rx";
 import { RiArrowDropDownLine, RiArrowDropRightLine } from "react-icons/ri";
-import { BsSearch } from "react-icons/bs";
 
-const Navbar = () => {
-  const [sessionId] = useState(localStorage.getItem("sessionId") || 0);
+const Navbar = ({ token, cartItems }) => {
+  // const [token] = useState(localStorage.getItem("token") || 0);
   const [categories, setCategories] = useState();
   const [stores, setStores] = useState();
   let navigate = useNavigate();
+
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/products/get-categories").then((res) => {
       setCategories(res.data);
@@ -26,8 +26,34 @@ const Navbar = () => {
     navigate(0);
   }
 
+  const handleStore = (store) => {
+    let params = new URLSearchParams();
+    let url = new URL(window.location.origin);
+
+    params.set("original_store", store.original_store);
+
+    for (const [key, value] of params.entries()) {
+      url.searchParams.set(`${key}`, `${value}`);
+    }
+
+    window.location.href = url.href;
+  };
+
+  const handleCat = (cat) => {
+    let params = new URLSearchParams();
+    let url = new URL(window.location.origin);
+
+    params.set("categorie__categorie_name", cat.categorie_name);
+
+    for (const [key, value] of params.entries()) {
+      url.searchParams.set(`${key}`, `${value}`);
+    }
+
+    window.location.href = url.href;
+  };
+
   return (
-    <div className="navbar bg-orange-500">
+    <div className="navbar bg-orange-500 w-full">
       <div className="flex-1">
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost md:hidden">
@@ -39,14 +65,20 @@ const Navbar = () => {
             className="menu menu-compact dropdown-content px-1 bg-white rounded-lg"
           >
             <li className="">
-              <a href="/">
+              <button>
                 Categories
                 <RiArrowDropRightLine />
-              </a>
+              </button>
               <ul className="p-2 bg-white">
                 {categories
                   ? categories.map((cat) => (
-                      <li key={cat.id} className="">
+                      <li
+                        key={cat.id}
+                        className=""
+                        onClick={() => {
+                          handleCat(cat);
+                        }}
+                      >
                         <button>{cat.categorie_name}</button>
                       </li>
                     ))
@@ -55,15 +87,19 @@ const Navbar = () => {
             </li>
 
             <li tabIndex={0} className="">
-              <a href="/">
+              <button>
                 Stores
                 <RiArrowDropRightLine />
-              </a>
+              </button>
               <ul className="p-2 bg-white w-full">
                 {stores
                   ? stores.map((store, _) => (
                       <li key={_} className="">
-                        <button className="text-center">
+                        <button
+                          onClick={() => {
+                            handleStore(store);
+                          }}
+                        >
                           {store.original_store}
                         </button>
                       </li>
@@ -88,16 +124,21 @@ const Navbar = () => {
         <div className="hidden md:flex">
           <ul tabIndex={0} className="menu menu-horizontal px-1">
             <li className="">
-              <a href="/">
+              <button>
                 Categories
                 <RiArrowDropDownLine />
-              </a>
+              </button>
               <ul className="p-2 bg-white w-full">
                 {categories
                   ? categories.map((cat) => (
                       <li key={cat.id} className="">
-                        <button className="text-center">
-                          f {cat.categorie_name}
+                        <button
+                          className="text-center"
+                          onClick={() => {
+                            handleCat(cat);
+                          }}
+                        >
+                          {cat.categorie_name}
                         </button>
                       </li>
                     ))
@@ -106,15 +147,20 @@ const Navbar = () => {
             </li>
 
             <li tabIndex={0} className="">
-              <a href="/">
+              <button>
                 Stores
                 <RiArrowDropDownLine />
-              </a>
+              </button>
               <ul className="p-2 bg-white w-full">
                 {stores
                   ? stores.map((store, _) => (
                       <li key={_} className="">
-                        <button className="text-center">
+                        <button
+                          className="text-center"
+                          onClick={() => {
+                            handleStore(store);
+                          }}
+                        >
                           {store.original_store}
                         </button>
                       </li>
@@ -131,7 +177,7 @@ const Navbar = () => {
           </ul>
         </div>
       </div>
-      <div className={`navbar-end ${sessionId ? "hidden" : ""}  `}>
+      <div className={`navbar-end ${token ? "hidden" : ""}  `}>
         <a
           href="/login"
           className="btn bg-white text-black hover:bg-white border-none mx-4 px-4"
@@ -139,28 +185,17 @@ const Navbar = () => {
           Login
         </a>
       </div>
-      <div className={`flex-none gap-2 ${sessionId ? "" : "hidden"}`}>
-        <div className="form-control hidden md:flex">
-          <div className="input-group">
-            <input
-              type="text"
-              placeholder="Search…"
-              className="input input-bordered"
-            />
-            <button className="btn btn-square">
-              <BsSearch className="h-5 w-5 bold" />
-            </button>
-          </div>
-        </div>
-
-        <div className="btn btn-ghost btn-circle">
-          <div className="indicator">
-            <a href="/">
+      <div className={`flex-none gap-2 ${token ? "" : "hidden"}`}>
+        <a href="/cart">
+          <div className="btn btn-ghost btn-circle">
+            <div className="indicator">
               <FiShoppingCart className="h-5 w-5" />
-            </a>
-            <span className="badge badge-sm indicator-item">8</span>
+              <span className="badge badge-sm indicator-item">
+                {cartItems.length}
+              </span>
+            </div>
           </div>
-        </div>
+        </a>
         <div className="dropdown dropdown-end">
           <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
             <div className="w-8 rounded-full">
@@ -172,7 +207,7 @@ const Navbar = () => {
             className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
           >
             <li className="">
-              <a href="/" className="justify-between">
+              <a href="/profile" className="justify-between">
                 Profile
               </a>
             </li>

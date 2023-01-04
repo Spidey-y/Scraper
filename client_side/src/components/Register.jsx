@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Axios } from "axios";
+import axios from "axios";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -10,26 +10,39 @@ const Register = () => {
   const [tel, setTel] = useState("");
   const [addr, setAddr] = useState("");
 
-  const handleRegister = () => {
-    Axios.post("http://127.0.0.1:8000/user/register", {
-      first_name: fname,
-      last_name: lname,
-      phone_number: tel,
-      address: addr,
-      email: email,
-      password: password,
-    })
+  const handleRegister = ({ setToken }) => {
+    axios
+      .post("http://127.0.0.1:8000/user/register", {
+        first_name: fname,
+        last_name: lname,
+        phone_number: tel,
+        address: addr,
+        email: email,
+        password: password,
+      })
       .then((response) => {
-        // console.log();
         let token = response.data.Token + " ";
-        localStorage.setItem("sessionId", token);
+        localStorage.setItem("token", token);
+        setToken(token);
+        window.location.href = "/";
       })
       .catch((err) => {
-        alert("Wrong credentials");
+        alert("Something went wrong");
       });
+    document.addEventListener("keyup", (e) => {
+      if (e.key === "Enter") {
+        handleRegister();
+      }
+    });
   };
   return (
-    <div className="flex flex-col gap-4 items-center container mx-auto my-8 p-12 border-gray-200 border">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleRegister();
+      }}
+      className="flex flex-col gap-4 items-center container mx-auto my-8 p-12 border-gray-200 border"
+    >
       <span className="text-3xl">Register</span>
       {/* <div className=""> */}
       {/* <label className="label item-right">What is your name?</label> */}
@@ -60,6 +73,10 @@ const Register = () => {
         }}
         id="tel"
         type="tel"
+        onInput={(e) => e.target.setCustomValidity("")}
+        onInvalid={(e) =>
+          e.target.setCustomValidity("Please Enter a valid phone number")
+        }
         placeholder="Phone number"
         className="input input-bordered w-full max-w-xs"
       />
@@ -80,6 +97,10 @@ const Register = () => {
         }}
         id="email"
         type="email"
+        onInput={(e) => e.target.setCustomValidity("")}
+        onInvalid={(e) =>
+          e.target.setCustomValidity("Please Enter a valid email")
+        }
         placeholder="email"
         className="input input-bordered w-full max-w-xs"
       />
@@ -93,13 +114,11 @@ const Register = () => {
         placeholder="password"
         className="input input-bordered w-full max-w-xs"
       />
-      <button
+      <input
         className="btn btn-outline bg-orange-500 hover:bg-orange-300 hover:text-inherit w-36"
-        onClick={handleRegister}
-      >
-        Register
-      </button>
-
+        type="submit"
+        value="Register"
+      />
       <span className="text-xl justify-self-start">
         Already have an account?{" "}
         <a href="/login" className="underline">
@@ -107,7 +126,7 @@ const Register = () => {
         </a>
       </span>
       {/* </div> */}
-    </div>
+    </form>
   );
 };
 

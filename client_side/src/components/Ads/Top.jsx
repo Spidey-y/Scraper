@@ -1,7 +1,7 @@
 
 const Top = ({ad}) => {
   return (
-    <div className="container mx-auto my-8  border-gray-200 border-4 h-52">
+    <div className="container mx-auto my-8  border-gray-200 border-4 h-72">
       <img src={`${ad.photo}`} alt={`${ad.title}`} className="h-full w-full" />
     </div>
   );

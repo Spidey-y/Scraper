@@ -1,10 +1,10 @@
 import Navbar from '../components/Navbar';
 import About from '../components/About'
 
-function Aboutus() {
+function Aboutus({ token, cartItems }) {
   return (
     <>
-      <Navbar />
+      <Navbar token={token} cartItems={cartItems} />
       <About />
     </>
   );

@@ -1,27 +1,21 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
 import Navbar from "../components/Navbar";
 import LoginForm from "../components/Login";
 
-function Login() {
+function Login({ token, setToken, cartItems }) {
 
-  let history = useNavigate();
-
+  const history = useNavigate();
   useEffect(() => {
-    const sessionId = localStorage.getItem("sessionId") || 0;
-    if (sessionId) {
+    if (token) {
       history("/");
-    } else {
-      console.log("something went wrong");
-      history("/login");
     }
-  }, [history]);
+  }, [history, token]);
 
   return (
     <>
-      <Navbar />
-      <LoginForm />
+      <Navbar token={token} cartItems={cartItems} />
+      <LoginForm setToken={setToken} />
     </>
   );
 }

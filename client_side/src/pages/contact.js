@@ -1,13 +1,13 @@
 import Navbar from '../components/Navbar';
-import About from '../components/About'
+import Contact from '../components/Contact'
 
-function Aboutus() {
+function Contactus({ token, cartItems }) {
   return (
     <>
-      <Navbar />
-      <About />     
+      <Navbar token={token} cartItems={cartItems} />
+      <Contact />     
     </>
   );
 }
 
-export default Aboutus;
+export default Contactus;
