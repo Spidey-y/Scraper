@@ -108,6 +108,9 @@ class GetOrderView(generics.GenericAPIView):
 @api_view(["Delete"])
 @permission_classes([IsAuthenticated])
 def DeleteOrderView(request, id):
+    """
+    Deletes order, only if it exists and through the user id
+    """
     try:
         obj = Order.objects.get(id=id,user=request.user)
         if obj.status == 'pending':

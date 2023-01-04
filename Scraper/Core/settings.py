@@ -24,7 +24,7 @@ from config import DATABASE_SCHEMA, DATABASE_USERNAME, DATABASE_PASSWORD, DATABA
 SECRET_KEY = SECRET
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['df2b-41-109-177-179.eu.ngrok.io', '127.0.0.1']
 CSRF_TRUSTED_ORIGINS = ['https://df2b-41-109-177-179.eu.ngrok.io', 'http://127.0.0.1']
@@ -159,3 +159,6 @@ AUTH_USER_MODEL = 'user.User'
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
