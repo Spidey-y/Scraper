@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Navbar from '../components/Navbar';
-import RegisterForm from '../components/Register';
+import Profile from '../components/Profile';
 
-function Register({ token, cartItems, setCart }) {
+function Register({ token, cartItems }) {
   
   let history = useNavigate();
 
@@ -17,7 +17,7 @@ function Register({ token, cartItems, setCart }) {
   return (
     <>
       <Navbar token={token} cartItems={cartItems} />
-      <RegisterForm />      
+      <Profile token={token} />      
     </>
   );
 }

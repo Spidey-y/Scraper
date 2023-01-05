@@ -24,7 +24,7 @@ from config import DATABASE_SCHEMA, DATABASE_USERNAME, DATABASE_PASSWORD, DATABA
 SECRET_KEY = SECRET
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1']
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000']

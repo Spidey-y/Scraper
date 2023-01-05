@@ -13,7 +13,6 @@ function App() {
   const [token, setToken] = useState(localStorage.getItem("token") || 0);
   const [cartItems, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
   const [counter, setCounter] = useState(JSON.parse(localStorage.getItem('counter'))||{});
-  // counter={counter} setCounter={setCounter}
 
   return (
     <Router>

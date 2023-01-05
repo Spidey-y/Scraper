@@ -1,4 +1,13 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+
 const About = () => {
+  const [about, setAbout] = useState({})
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/aboutus/")
+      .then((res) => setAbout(res.data));
+  },[]);
   return (
     <>
       {/* // <div className='flex flex-col gap-4 items-center container mx-auto my-8 p-12 border-gray-200 border-2'> */}
@@ -13,10 +22,10 @@ const About = () => {
             bis_skin_checked="1"
           >
             <iframe
-            title="test"
-            className="absolute inset-0 h-full w-full border-0"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d102286.37345873132!2d3.066513930681739!3d36.75979065537532!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x128fad6795639515%3A0x4ba4b4c9d0a7e602!2sAlger!5e0!3m2!1sfr!2sdz!4v1672752246656!5m2!1sfr!2sdz"
-              allowfFllScreen=""
+              title="test"
+              className="absolute inset-0 h-full w-full border-0"
+              src={about.google_map_link}
+              allowFullScreen=""
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             ></iframe>
@@ -29,20 +38,23 @@ const About = () => {
                   ADDRESS
                 </h2>
                 <p className="mt-1">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  {about.address}
                 </p>
               </div>
               <div className="lg:w-1/2 px-6 mt-4 lg:mt-0" bis_skin_checked="1">
                 <h2 className="title-font font-semibold text-gray-900 tracking-widest text-xs">
                   EMAIL
                 </h2>
-                <a className="text-orange-500 leading-relaxed" href='mailto:admin@email.com'>
-                  admin@email.com
+                <a
+                  className="text-orange-500 leading-relaxed"
+                  href={`mailto:${about.email}`}
+                >
+                  {about.email}
                 </a>
                 <h2 className="title-font font-semibold text-gray-900 tracking-widest text-xs mt-4">
                   PHONE
                 </h2>
-                <p className="leading-relaxed">123-456-7890</p>
+                <p className="leading-relaxed">{about.phone_number}</p>
               </div>
             </div>
           </div>
@@ -101,7 +113,6 @@ const About = () => {
         </div>
       </section>
       <p className="text-center text-gray-400 mt-4 text-xl">Scraper 2023</p>
-      {/* </div> */}
     </>
   );
 };

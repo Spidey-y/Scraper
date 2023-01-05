@@ -13,7 +13,7 @@ const Login = ({ setToken }) => {
         password: password,
       })
       .then((response) => {
-        let token = response.data.Token + " ";
+        let token = response.data.Token;
         localStorage.setItem("token", token);
         setToken(token);
         window.location.href = "/";

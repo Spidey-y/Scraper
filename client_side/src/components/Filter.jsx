@@ -23,11 +23,12 @@ const Filter = ({ categories, brands, stores }) => {
     let params = new URLSearchParams();
     for (const key in query) {
       if (Object.hasOwnProperty.call(query, key)) {
-        Array.isArray(query[`${key}`])
-          ? query[`${key}`].forEach((e) => {
-              params.append(key, e);
-            })
-          : params.append(key, query[`${key}`]);
+        // Array.isArray(query[`${key}`])
+        //   ? query[`${key}`].forEach((e) => {
+        //       params.append(key, e);
+        //     })
+        //   :
+        params.append(key, query[`${key}`]);
       }
     }
     window.location.search = params.toString();
@@ -50,14 +51,14 @@ const Filter = ({ categories, brands, stores }) => {
       <div className="form-control col-span-11 md:row-start-1">
         <div className="input-group ">
           <input
-          autoFocus
+            autoFocus
             type="text"
             placeholder="Search…"
             className="input input-bordered grow focus:border-0"
             value={search}
-            onChange={e => {
+            onChange={(e) => {
               setSearch(e.target.value);
-              setQuery({...query, search: e.target.value})
+              setQuery({ ...query, search: e.target.value });
             }}
           />
           <button className="btn btn-square" onClick={setQueryParams}>
@@ -81,7 +82,9 @@ const Filter = ({ categories, brands, stores }) => {
             options={categories}
             placeholder={"Category"}
             className=" mx-4 my-4 w-full"
-            onChange={(e) => setQuery({ ...query, categorie__categorie_name: e.value })}
+            onChange={(e) =>
+              setQuery({ ...query, categorie__categorie_name: e.value })
+            }
           />
           <Select
             closeMenuOnSelect={false}
@@ -91,7 +94,7 @@ const Filter = ({ categories, brands, stores }) => {
             placeholder={"Brand"}
             className=" mx-4 my-4 w-full"
             onChange={(e) =>
-              setQuery({ ...query, brand: e.map((el) => el.value) })
+              setQuery({ ...query, brand__in: String(e.map((el) => el.value)) })
             }
           />
           <Select
@@ -102,7 +105,10 @@ const Filter = ({ categories, brands, stores }) => {
             placeholder={"Store"}
             className=" mx-4 my-4 w-full"
             onChange={(e) =>
-              setQuery({ ...query, original_store: e.map((el) => el.value) })
+              setQuery({
+                ...query,
+                original_store__in: String(e.map((el) => el.value)),
+              })
             }
           />
         </div>

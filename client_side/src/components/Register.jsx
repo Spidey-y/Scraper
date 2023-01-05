@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import axios from "axios";
 
-const Register = () => {
+const Register = ({ setToken }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fname, setFname] = useState("");
@@ -10,7 +10,7 @@ const Register = () => {
   const [tel, setTel] = useState("");
   const [addr, setAddr] = useState("");
 
-  const handleRegister = ({ setToken }) => {
+  const handleRegister = () => {
     axios
       .post("http://127.0.0.1:8000/user/register", {
         first_name: fname,
@@ -21,7 +21,7 @@ const Register = () => {
         password: password,
       })
       .then((response) => {
-        let token = response.data.Token + " ";
+        let token = response.data.Token;
         localStorage.setItem("token", token);
         setToken(token);
         window.location.href = "/";
@@ -29,11 +29,6 @@ const Register = () => {
       .catch((err) => {
         alert("Something went wrong");
       });
-    document.addEventListener("keyup", (e) => {
-      if (e.key === "Enter") {
-        handleRegister();
-      }
-    });
   };
   return (
     <form
@@ -112,6 +107,7 @@ const Register = () => {
         id="password"
         type="password"
         placeholder="password"
+        minlength="8"
         className="input input-bordered w-full max-w-xs"
       />
       <input

@@ -55,7 +55,9 @@ function ConfirmOrder({ token, cartItems, counter, setCart, setCounter }) {
             localStorage.removeItem('counter');
             setCart([]);
             setCounter({})
-          });
+            alert('the order has been passed')
+            window.location.href = '/'
+          }).catch(err => alert('something went wrong, try again later'));
       });
   };
 

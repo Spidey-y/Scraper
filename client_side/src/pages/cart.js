@@ -17,7 +17,7 @@ function Cart({ token, cartItems, setCart, counter, setCounter }) {
   return (
     <>
       <Navbar token={token} cartItems={cartItems}/>
-      <CartComponent token={token} cartItems={cartItems} setCart={setCart} counter={counter} setCounter={setCounter} />      
+      {cartItems.length ? <CartComponent token={token} cartItems={cartItems} setCart={setCart} counter={counter} setCounter={setCounter} />   : <div className='text-center text-2xl mt-8'>No items in cart</div>}   
     </>
   );
 }

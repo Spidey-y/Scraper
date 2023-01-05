@@ -20,6 +20,7 @@ const Cart = ({ token, cartItems, setCart, counter, setCounter }) => {
   return (
     <>
       <div className="container flex flex-col mx-auto place-items-center">
+      
         <ConfirmOrder token={token} cartItems={cartItems} counter={counter} setCart={setCart} setCounter={setCounter}/>
         {/* <ConfirmOrder/> */}
         {cartItems.map((prod, _) => (
@@ -30,13 +31,13 @@ const Cart = ({ token, cartItems, setCart, counter, setCounter }) => {
             <img
               className="col-span-1 row-span-4 rounded-l-xl col-start-1 h-36"
               src={prod.photo}
-              alt={prod.description}
+              alt={prod.description.slice(0,100)}
             ></img>
             <div className="col-span-2 row-span-2 col-start-2 row-start-1 text-lg md:text-xl text-black">
-              {prod.full_name}
+              {prod.full_name.slice(0,50)}
             </div>
             <div className="col-span-2 row-span-1 col-start-2 row-start-3 md:text-lg justify-self-start ml-4 text-gray-400">
-              Description: {prod.description}
+              Description: {prod.description.slice(0,100)}
             </div>
             <div className="col-span-1 row-span-1 col-start-2 row-start-4 justify-self-start ml-4">
               from{" "}

@@ -12,6 +12,7 @@ const Main = ({ cartItems, setCart, counter, setCounter }) => {
   const [brands, setBrands] = useState([]);
   const [stores, setStores] = useState([]);
   const [products, setProducts] = useState({});
+  
 
   useEffect(() => {
     getAds();
@@ -67,7 +68,7 @@ const Main = ({ cartItems, setCart, counter, setCounter }) => {
     let query = Object.fromEntries(new URLSearchParams(window.location.search));
     axios
       .get("http://127.0.0.1:8000/products/", {
-        params: { ...query },
+        params: { ...query},
       })
       .then(res => {setProducts(res.data);});
   };
