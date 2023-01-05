@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 from config import DATABASE_SCHEMA, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_HOST, DATABSE_PORT, SECRET
 
 
@@ -24,10 +24,10 @@ from config import DATABASE_SCHEMA, DATABASE_USERNAME, DATABASE_PASSWORD, DATABA
 SECRET_KEY = SECRET
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1']
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000']
 LOGIN_URL = '/admin/login'
 
 # Application definition
@@ -51,14 +51,15 @@ INSTALLED_APPS = [
     'setting'
 ]
 
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media")
-MEDIA_URL = "/products/"
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -66,6 +67,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+
 
 ROOT_URLCONF = 'Core.urls'
 
@@ -150,6 +154,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
+STATIC_ROOT = 'staticfiles'
 
 STATIC_URL = 'static/'
 

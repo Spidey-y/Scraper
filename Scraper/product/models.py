@@ -12,7 +12,7 @@ class Categorie(models.Model):
 
 class Product(models.Model):
     full_name = models.CharField(max_length=255, blank=False, null=False)
-    photo = models.ImageField(upload_to=settings.MEDIA_URL[1:], blank=True, max_length=1000)
+    photo = models.ImageField(upload_to="products/", blank=True, max_length=1000)
     price = models.DecimalField(max_digits=20, decimal_places=2, )
     original_link = models.CharField(max_length=1000, blank=False, null=False)
     original_store = models.CharField(max_length=255, blank=False, null=False)

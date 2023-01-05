@@ -12,8 +12,10 @@ class AboutUsSerializer(serializers.ModelSerializer):
             'phone_number',
             'email',
             'address',
-            'about_us',
-            'google_map_link'
+            'google_map_link',
+            'about_us_1',
+            'about_us_2',
+            'about_us_2',
         ]
 
 
