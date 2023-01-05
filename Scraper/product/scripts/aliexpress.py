@@ -2,10 +2,9 @@ from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.by import  By
 from selenium.webdriver.common.action_chains import ActionChains
-from .config import set_chrome_options
 
 def scrap_aliexpress(url, perc):
-    driver = webdriver.Chrome(options=set_chrome_options())
+    driver = webdriver.Chrome()
     driver.get(url)
     language = driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/div/div[2]/div[3]')
     driver.implicitly_wait(10)
