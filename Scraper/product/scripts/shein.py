@@ -1,12 +1,11 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from time import sleep
-from .config import set_chrome_options
 
 
 
 def scrap_shein(url, perc):
-    driver = webdriver.Chrome(options=set_chrome_options())
+    driver = webdriver.Chrome()
     driver.get(url)
     driver.execute_script("window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })")
     sleep(1)
@@ -37,4 +36,5 @@ def scrap_shein(url, perc):
             staff_pick=staff_pick,
             description="\n".join(description),
         ))
+        print(products[-1])
     return products
