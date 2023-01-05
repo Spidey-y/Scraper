@@ -85,7 +85,10 @@ def process_data(urls, categorie, store, user, perc, maxVal ,more, less):
                     break
 
                 for prod in products:
-                        resp = requests.get(prod['photo'], headers=headers)
+                        try:
+                            resp = requests.get(prod['photo'], headers=headers)
+                        except:
+                            continue
                         # if image found download it, else insert image not found in ret
                         if resp.status_code == 200:
                             try:
