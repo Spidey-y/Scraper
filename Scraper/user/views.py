@@ -19,6 +19,7 @@ class RegisterUserView(generics.GenericAPIView):
         user = UserRegisterSerializer(data=request.data)
         if user.is_valid():
             user.save()
+            user = User.objects.get(id=user.data["id"])
             token = Token.objects.create(user=user)
             return Response({"Token": token.key}, status=status.HTTP_201_CREATED)
         return Response({"details": "Invalid data"}, status=status.HTTP_400_BAD_REQUEST)
