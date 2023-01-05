@@ -71,7 +71,6 @@ def process_data(urls, categorie, store, user, perc, maxVal ,more, less):
                 cates.append(new_categorie.id)
             else:
                 cates.append(c.id)
-        try:
             #pick the store (scraping function)
             for url in urls.split("\r\n"):
                 if store=="amazon":
@@ -86,41 +85,41 @@ def process_data(urls, categorie, store, user, perc, maxVal ,more, less):
                     break
 
                 for prod in products:
-                    resp = requests.get(prod['photo'], headers=headers)
-                    # if image found download it, else insert image not found in ret
-                    if resp.status_code == 200:
-                        # download image
-                        parsed_url = urlparse(prod['photo'])
-                        filename = parsed_url.path.split('/')[-1]
-                        img = File(BytesIO(resp.content), name=filename)
-                        # insert image in the object
-                        prod['photo'] = img
-                        print(prod['price'])
-                        if prod['price'] > maxVal:
-                            prod['price'] += more
+                        resp = requests.get(prod['photo'], headers=headers)
+                        # if image found download it, else insert image not found in ret
+                        if resp.status_code == 200:
+                            try:
+                                # download image
+                                parsed_url = urlparse(prod['photo'])
+                                filename = parsed_url.path.split('/')[-1]
+                                img = File(BytesIO(resp.content), name=filename)
+                                # insert image in the object
+                                prod['photo'] = img
+                                if prod['price'] > maxVal:
+                                    prod['price'] += more
+                                else:
+                                    prod['price'] += less
+                                prod['original_store'] = store.lower()
+                                prod['brand'] = prod['brand'].lower()
+                                prod['categorie'] = cates
+                                # check if the data is correct, if so inset it in database
+                                instc = Product.objects.filter(full_name=prod).first()
+                                if instc:
+                                    update = AddProductSerializer(instc, data=prod)
+                                    if update.is_valid():
+                                        update.save()
+                                        continue
+                                else:
+                                    prod_serilizer = AddProductSerializer(data=prod)
+                                    if prod_serilizer.is_valid():
+                                            prod_serilizer.save()
+                                    else:
+                                        ret[prod['full_name']] = prod_serilizer.errors
+                            except:
+                                ret[prod['full_name']] = 'product wasn\'t added'
                         else:
-                            prod['price'] += less
-                        prod['original_store'] = store.lower()
-                        prod['brand'] = prod['brand'].lower()
-                        prod['categorie'] = cates
-                        # check if the data is correct, if so inset it in database
-                        instc = Product.objects.filter(full_name=prod).first()
-                        if instc:
-                            update = AddProductSerializer(instc, data=prod)
-                            if update.is_valid():
-                                update.save()
-                                continue
-                        else:
-                            prod_serilizer = AddProductSerializer(data=prod)
-                            if prod_serilizer.is_valid():
-                                    prod_serilizer.save()
-                            else:
-                                ret[prod['full_name']] = prod_serilizer.errors
-                    else:
-                        # if photo nout found
-                        ret[prod['full_name']] = "picture not found"
-        except:
-            ret[url] = 'invalid url'
+                            # if photo nout found
+                            ret[prod['full_name']] = "picture not found"
         #log the action
         log = Log(user=user, action="Added new products succefully")
         log.save()

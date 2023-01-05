@@ -10,3 +10,5 @@ django-filter
 bs4
 html5lib
 selenium
+whitenoise
+gunicorn 

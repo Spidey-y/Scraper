@@ -6,7 +6,7 @@ The idea of the project is a website that provides products from many different 
 
 # Installation
 
-A docker compose file is provided, make sure to change the env variables to what suits you.
+A docker compose file is provided, make sure to change the env variables to what suits you (MySQL, django, ngnix (to serve media)).
 Else create a vitual env, install requirement.txt and run: 
 
 >python manage.py makemigrations <br/>
@@ -18,7 +18,7 @@ please note that a MySQL server must be running on port 3306 for the second meth
 
 # structure
 
-This repo contains a django rest framework API, it uses MySQL as database.
+This repo contains a django rest framework API, it uses MySQL as database, and ngnix to serve pictures.
 
  
 

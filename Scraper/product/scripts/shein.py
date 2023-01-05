@@ -36,5 +36,4 @@ def scrap_shein(url, perc):
             staff_pick=staff_pick,
             description="\n".join(description),
         ))
-        print(products[-1])
     return products
