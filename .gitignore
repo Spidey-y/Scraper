@@ -5,3 +5,4 @@ Scraper/venv
 **/media/
 **/.venv/
 **/.idea/
+**/staticfiles
