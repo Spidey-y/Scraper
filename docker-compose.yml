@@ -42,18 +42,8 @@ services:
     volumes:
       - media_volume:/app/media
     depends_on:
-      # - client
       - app
 
-  client:
-    build: ./client_side
-    restart: on-failure
-    volumes:
-      - .:/app
-      - node_modules:/app/node_modules
-    ports:
-      - "3000:3000"
 volumes:
   media_volume:
   db_data:
-  node_modules:

@@ -1,8 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
+from .add_prodcut import AddProduct
 
-
-def scrape_amazon(url, perc):
+def scrape_amazon(url, perc, store, cate, maxVal, more, less):
     headers = {
         'dnt': '1',
         'upgrade-insecure-requests': '1',
@@ -15,13 +15,16 @@ def scrape_amazon(url, perc):
         'referer': 'https://www.amazon.com/',
         'accept-language': 'en-GB,en-US;q=0.9,en;q=0.8',
     }
+
     r = requests.get(url, headers=headers)
     soup = BeautifulSoup(r.content, 'html5lib')
     products = []
     tab = soup.findAll('div', attrs={"data-component-type": "s-search-result"})
+    
     for prod in tab:
         tmp = {'photo': prod.find('img')['src'], 'full_name': str(prod.find(class_='a-text-normal').text.strip())}
         link = prod.find(class_='a-link-normal')['href']
+        
         if "https://www.amazon.com" in link:
             tmp['original_link'] = link
         else:
@@ -50,8 +53,8 @@ def scrape_amazon(url, perc):
             tmp['description'] = get_descibtion(tmp['original_link'])
         except:
             tmp['description'] = ""
-        products.append(tmp)
-    return products
+        AddProduct(tmp, store, cate, maxVal, more, less)
+
 
 def get_descibtion(url):
     headers = {

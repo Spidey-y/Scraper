@@ -2,27 +2,30 @@ from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.by import  By
 from selenium.webdriver.common.action_chains import ActionChains
+from .add_prodcut import AddProduct
 
-def scrap_aliexpress(url, perc):
+
+
+def scrap_aliexpress(url, perc, store, cate, maxVal, more, less):
     driver = webdriver.Chrome()
     driver.get(url)
-    language = driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/div/div[2]/div[3]')
+    language = driver.find_element(By.CSS_SELECTOR, '#switcher-info')
     driver.implicitly_wait(10)
     ActionChains(driver).move_to_element(language).click(language).perform()
     sleep(1)
-    language = driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/div/div[2]/div[3]/div/div/div/div[2]/div/span/a')
+    language = driver.find_element(By.CSS_SELECTOR, '#nav-global > div.ng-item-wrap.ng-item.ng-switcher.active > div > div > div > div.switcher-language.item.util-clearfix > div > span')
     language.click()
     sleep(1)
-    language = driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/div/div[2]/div[3]/div/div/div/div[2]/div/ul/li[1]/a')
+    language = driver.find_element(By.CSS_SELECTOR, '#nav-global > div.ng-item-wrap.ng-item.ng-switcher.active > div > div > div > div.switcher-language.item.util-clearfix > div > ul > li:nth-child(5) > a')
     language.click()
     sleep(1)
-    language = driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/div/div[2]/div[3]/div/div/div/div[3]/div/span/a')
+    language = driver.find_element(By.CSS_SELECTOR, '#nav-global > div.ng-item-wrap.ng-item.ng-switcher.active > div > div > div > div.switcher-currency.item.util-clearfix > div > span')
     language.click()
     sleep(1)
-    language = driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/div/div[2]/div[3]/div/div/div/div[3]/div/ul/li[5]/a')
+    language = driver.find_element(By.CSS_SELECTOR, '#nav-global > div.ng-item-wrap.ng-item.ng-switcher.active > div > div > div > div.switcher-currency.item.util-clearfix > div > ul > li:nth-child(5) > a')
     language.click()
     sleep(1)
-    language = driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/div/div[2]/div[3]/div/div/div/div[4]/button')
+    language = driver.find_element(By.CSS_SELECTOR, '#nav-global > div.ng-item-wrap.ng-item.ng-switcher.active > div > div > div > div.switcher-btn.item.util-clearfix > button')
     language.click()
     sleep(1)
 
@@ -51,7 +54,7 @@ def scrap_aliexpress(url, perc):
         description = full_name
         driver.close()
         driver.switch_to.window(driver.window_handles[0])
-        products.append(dict(
+        AddProduct(dict(
             original_link=original_link,
             full_name=full_name,
             photo=photo,
@@ -59,6 +62,6 @@ def scrap_aliexpress(url, perc):
             brand=brand,
             staff_pick=staff_pick,
             description=description,
-        ))
+        ), store, cate, maxVal, more, less)
+        
 
-    return products

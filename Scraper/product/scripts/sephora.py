@@ -1,10 +1,11 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from time import sleep
+from .add_prodcut import AddProduct
 
 
 
-def scrap_sephora(url, perc):
+def scrap_sephora(url, perc, store, cate, maxVal, more, less):
     driver = webdriver.Chrome()
     driver.get(url)
     driver.execute_script("window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })")
@@ -31,14 +32,14 @@ def scrap_sephora(url, perc):
         driver.close()
         driver.switch_to.window(driver.window_handles[0])
 
-        products.append(dict(
+        AddProduct(dict(
             original_link=original_link,
             full_name=full_name,
             photo=photo,
             price=price,
             brand=brand,
             staff_pick=staff_pick,
-            description="".join(description),
-        ))
+            description="\n".join(description),
+        ), store, cate, maxVal, more, less)
 
-    return products
+

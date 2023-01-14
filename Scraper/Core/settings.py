@@ -24,9 +24,9 @@ from config import DATABASE_SCHEMA, DATABASE_USERNAME, DATABASE_PASSWORD, DATABA
 SECRET_KEY = SECRET
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['wassitcom.com','www.wassitcom.com','127.0.0.1']
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000']
 LOGIN_URL = '/admin/login'
 
@@ -52,7 +52,7 @@ INSTALLED_APPS = [
 ]
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = "/home/wassit14/public_html/media"
 
 
 MIDDLEWARE = [

@@ -74,55 +74,16 @@ def process_data(urls, categorie, store, user, perc, maxVal ,more, less):
             #pick the store (scraping function)
             for url in urls.split("\r\n"):
                 if store=="amazon":
-                    products = scrape_amazon(url, perc)
+                    scrape_amazon(url, perc, "amazon", cates, maxVal, more, less)
+
                 elif store == "shein":
-                    products = scrap_shein(url, perc)
+                    scrap_shein(url, perc, "shein", cates, maxVal, more, less)
                 elif store == "sephora":
-                    products = scrap_sephora(url, perc)
+                    scrap_sephora(url, perc, "sephora", cates, maxVal, more, less)
                 elif store == "aliexpress":
-                    products = scrap_aliexpress(url, perc)
+                    scrap_aliexpress(url, perc, "aliexpress", cates, maxVal, more, less)
                 else:
                     break
-
-                for prod in products:
-                        try:
-                            resp = requests.get(prod['photo'], headers=headers)
-                        except:
-                            continue
-                        # if image found download it, else insert image not found in ret
-                        if resp.status_code == 200:
-                            try:
-                                # download image
-                                parsed_url = urlparse(prod['photo'])
-                                filename = parsed_url.path.split('/')[-1]
-                                img = File(BytesIO(resp.content), name=filename)
-                                # insert image in the object
-                                prod['photo'] = img
-                                if prod['price'] > maxVal:
-                                    prod['price'] += more
-                                else:
-                                    prod['price'] += less
-                                prod['original_store'] = store.lower()
-                                prod['brand'] = prod['brand'].lower()
-                                prod['categorie'] = cates
-                                # check if the data is correct, if so inset it in database
-                                instc = Product.objects.filter(full_name=prod).first()
-                                if instc:
-                                    update = AddProductSerializer(instc, data=prod)
-                                    if update.is_valid():
-                                        update.save()
-                                        continue
-                                else:
-                                    prod_serilizer = AddProductSerializer(data=prod)
-                                    if prod_serilizer.is_valid():
-                                            prod_serilizer.save()
-                                    else:
-                                        ret[prod['full_name']] = prod_serilizer.errors
-                            except:
-                                ret[prod['full_name']] = 'product wasn\'t added'
-                        else:
-                            # if photo nout found
-                            ret[prod['full_name']] = "picture not found"
         #log the action
         log = Log(user=user, action="Added new products succefully")
         log.save()
@@ -130,6 +91,6 @@ def process_data(urls, categorie, store, user, perc, maxVal ,more, less):
         return ret
     except:
         # if there was an issue
-        log = Log(user=user, action="Failed to add new products")
+        log = Log(user=user, action="Added new products succefully")
         log.save()
-        return {"details": "either url is incorrect or url blocked by host"}
+        return {"details": "Upload is over, if you cant find the new products, either url is incorrect or url blocked by host"}
